@@ -56,12 +56,17 @@ public static void main(){
             PatientData.setLayout(new BoxLayout(PatientData,BoxLayout.Y_AXIS));
             PatientData.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
             PatientPanel.add(PatientData);
-            JTextField TextFill_PName = new JTextField( 20);
-            JTextField TextFill_PFName = new JTextField( 20);
-            JTextField TextFill_Pphone = new JTextField( 20);
-            JTextField TextFill_Padress = new JTextField( 20);
+            JTextField TextFill_PName = new JTextField(  "patient name" , 20);
+            JTextField TextFill_PFName = new JTextField( "patient family name", 20);
+            JTextField TextFill_Pphone = new JTextField( "patient phone number" , 20);
+            JTextField TextFill_Padress = new JTextField("patient adress" , 20);
+            JFormattedTextField TextFill_Date = new JFormattedTextField("##-##-####"); 
 
             JButton Button_PName = new JButton("enter" );
+
+            Button_PName.addActionListener(e -> {
+                db_op.insert_patient(TextFill_PName.getText(),TextFill_PFName.getText(), TextFill_Date.getText(),TextFill_Padress.getText(),TextFill_Pphone.getText());
+            });
 
             PatientData.add(TextFill_PName);
             PatientData.add(Box.createVerticalStrut(10));
@@ -71,7 +76,10 @@ public static void main(){
             PatientData.add(Box.createVerticalStrut(10));
             PatientData.add(TextFill_Padress);
             PatientData.add(Box.createVerticalStrut(10));
+            PatientData.add(TextFill_Date);
+            PatientData.add(Box.createVerticalStrut(10));
             PatientData.add(Button_PName);
+            
 
             
 
@@ -83,11 +91,10 @@ public static void main(){
             DoctorData.setLayout(new BoxLayout(DoctorData,BoxLayout.Y_AXIS));
             DoctorData.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
             DoctorPanel.add(DoctorData);
-            JTextField TextFill_DName = new JTextField( 20);
-            JTextField TextFill_DFName = new JTextField( 20);
-            JTextField TextFill_Dphone = new JTextField( 20);
-            JTextField TextFill_Dadress = new JTextField( 20);
-
+            JTextField TextFill_DName = new JTextField(  "Doctor name" , 20);
+            JTextField TextFill_DFName = new JTextField(  "Doctor family name", 20);
+            JTextField TextFill_Dphone = new JTextField( "Doctor phone number" ,  20);
+            JTextField TextFill_Dadress = new JTextField("Doctor specialty" , 20);
             JButton Button_DName = new JButton("enter" );
 
             DoctorData.add(TextFill_DName);
