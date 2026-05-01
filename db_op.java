@@ -16,10 +16,12 @@ public class db_op {
         java.sql.Date sqlDate = java.sql.Date.valueOf(date);  
 
         try(
+
+            //connecting to the database using try-with-resources to ensure proper resource management
             Connection conn = DriverManager.getConnection(url, user, passwd);
             
             PreparedStatement pstmt = conn.prepareStatement(sql)) {
-
+            //setting the parameters for the prepared statement
             pstmt.setString(1, name);
             pstmt.setString(2, lastname);
             pstmt.setDate(3, sqlDate);
@@ -33,13 +35,12 @@ public class db_op {
             e.printStackTrace(); // This prints the "why" in your console
         }
     }
+    // same as insert_patient but for doctor table
+    public static void insert_doctor( String name , String lastname , String specialty,  String phone ){
 
-    public static void insert_doctor( String name , String lastname , String address , String date , String phone ){
 
-
-        String sql = "INSERT INTO doctor VALUES (seq_patient.NEXTVAL,?,?,?,?,?)";
-
-        java.sql.Date sqlDate = java.sql.Date.valueOf(date);  
+        String sql = "INSERT INTO doctor VALUES (seq_doctor.NEXTVAL,?,?,?,?)";
+  
 
         try(
             Connection conn = DriverManager.getConnection(url, user, passwd);
@@ -48,9 +49,9 @@ public class db_op {
 
             pstmt.setString(1, name);
             pstmt.setString(2, lastname);
-            pstmt.setDate(3, sqlDate);
+            pstmt.setString(3, specialty);
             pstmt.setString(4, phone);
-            pstmt.setString(5, address);
+            
 
             pstmt.executeUpdate();
 
