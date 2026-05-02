@@ -1,4 +1,7 @@
 import java.sql.* ;
+import javax.swing.*;
+import java.awt.*;
+import javax.swing.table.DefaultTableModel;
 
 public class db_op {
 
@@ -132,6 +135,35 @@ public class db_op {
         }
 
         return result;
+    }
+
+    public static void loadData(JTable table) {
+        String query = "SELECT num_doctor, lastname, firstname , specialty FROM doctor";
+
+        // DefaultTableModel handles the column names and data rows
+        DefaultTableModel model = new DefaultTableModel(new String[]{"ID", "Lastname", "Firstname", "Specialty"}, 0);
+
+        try (Connection conn = DriverManager.getConnection(url, user, passwd);
+             Statement stmt = conn.createStatement();
+             ResultSet rs = stmt.executeQuery(query)) {
+
+            while (rs.next()) {
+                // Pull data from the row
+                int id = rs.getInt("num_doctor");
+                String lastname = rs.getString("lastname");
+                String firstname = rs.getString("firstname");
+                String specialty = rs.getString("specialty");
+
+                // Add the row to the model
+                model.addRow(new Object[]{id, lastname, firstname, specialty});
+            }
+
+            // Set the model to the table
+            table.setModel(model);
+
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, "Error: " + e.getMessage());
+        }
     }
 
 } 

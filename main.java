@@ -108,6 +108,8 @@ public class main {
         JTextField TextFill_Dadress = new JTextField("Doctor specialty", 20);
         JButton Button_DName = new JButton("enter");
         JButton searchButtonD = new JButton("Search Doctor");
+        JButton displayAllDoctors = new JButton("Display all doctors");
+        JTable doctorTable = new JTable();
 
 
         Button_DName.addActionListener(e -> {
@@ -129,6 +131,12 @@ public class main {
             JOptionPane.showMessageDialog(null, result);
         });
 
+        displayAllDoctors.addActionListener(e -> {
+            db_op.loadData(doctorTable);
+            JOptionPane.showMessageDialog(null, new JScrollPane(doctorTable), "All Doctors", JOptionPane.INFORMATION_MESSAGE);
+        });
+            
+
 
         DoctorData.add(TextFill_DName);
         DoctorData.add(Box.createVerticalStrut(10));
@@ -141,6 +149,8 @@ public class main {
         DoctorData.add(Button_DName);
         DoctorData.add(Box.createVerticalStrut(10));
         DoctorData.add(searchButtonD);
+        DoctorData.add(Box.createVerticalStrut(10));
+        DoctorData.add(displayAllDoctors);
 
 
         MainPanel.add(AppointmentPanel, "Appointment");
