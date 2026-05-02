@@ -1,5 +1,6 @@
 import javax.swing.*;
 import java.awt.*;
+import javax.swing.table.DefaultTableModel;
 
 public class main {
 
@@ -31,13 +32,13 @@ public class main {
 
         MainPanel.add(Home, "Home");
 
-        JButton goP_Button = new JButton("Add a patient");
+        JButton goP_Button = new JButton("patient");
         goP_Button.addActionListener(e -> cardLayout.show(MainPanel, "Patient"));
 
-        JButton goD_Button = new JButton("Add a Doctor");
+        JButton goD_Button = new JButton("Doctor");
         goD_Button.addActionListener(e -> cardLayout.show(MainPanel, "Doctor"));
 
-        JButton goA_Button = new JButton("Add an Appointment");
+        JButton goA_Button = new JButton("Appointment");
         goA_Button.addActionListener(e -> cardLayout.show(MainPanel, "Appointment"));
 
         Home.add(goP_Button);
@@ -58,8 +59,12 @@ public class main {
         JTextField TextFill_Padress = new JTextField("patient address", 20);
         JTextField TextFill_Date = new JTextField("2000-01-01", 20);
 
+        JTextField TextFill_PID = new JTextField("patient ID", 20);
+
         JButton Button_PName = new JButton("enter");
         JButton searchButton = new JButton("Search Patient");
+        JButton deleteButtonP   = new JButton("Delete Patient");
+        JButton updateButtonP   = new JButton("Update Patient");
 
         Button_PName.addActionListener(e -> {
             db_op.insert_patient(
@@ -80,6 +85,41 @@ public class main {
             JOptionPane.showMessageDialog(null, result);
         });
 
+        deleteButtonP.addActionListener(e -> {
+            try {
+                int id = Integer.parseInt(TextFill_PID.getText().trim());
+                int confirm = JOptionPane.showConfirmDialog(
+                        null,
+                        "Delete patient with ID " + id + "?",
+                        "Confirm Delete",
+                        JOptionPane.YES_NO_OPTION
+                );
+                if (confirm == JOptionPane.YES_OPTION) {
+                    db_op.delete_patient(id);
+                    JOptionPane.showMessageDialog(null, "Patient deleted.");
+                }
+            } catch (NumberFormatException ex) {
+                JOptionPane.showMessageDialog(null, "Please enter a valid numeric ID.");
+            }
+        });
+
+        updateButtonP.addActionListener(e -> {
+            try {
+                int id = Integer.parseInt(TextFill_PID.getText().trim());
+                db_op.update_patient(
+                        id,
+                        TextFill_PName.getText(),
+                        TextFill_PFName.getText(),
+                        TextFill_Date.getText(),
+                        TextFill_Pphone.getText(),
+                        TextFill_Padress.getText()
+                );
+                JOptionPane.showMessageDialog(null, "Patient updated.");
+            } catch (NumberFormatException ex) {
+                JOptionPane.showMessageDialog(null, "Please enter a valid numeric ID.");
+            }
+        });
+
         PatientData.add(TextFill_PName);
         PatientData.add(Box.createVerticalStrut(10));
         PatientData.add(TextFill_PFName);
@@ -93,6 +133,12 @@ public class main {
         PatientData.add(Button_PName);
         PatientData.add(Box.createVerticalStrut(10));
         PatientData.add(searchButton);
+        PatientData.add(Box.createVerticalStrut(10));
+        PatientData.add(TextFill_PID);
+        PatientData.add(Box.createVerticalStrut(10));
+        PatientData.add(deleteButtonP);
+        PatientData.add(Box.createVerticalStrut(10));
+        PatientData.add(updateButtonP);
 
 
         MainPanel.add(DoctorPanel, "Doctor");
@@ -110,6 +156,10 @@ public class main {
         JButton searchButtonD = new JButton("Search Doctor");
         JButton displayAllDoctors = new JButton("Display all doctors");
         JTable doctorTable = new JTable();
+        JButton deleteButtonD   = new JButton("Delete Doctor");
+        JButton updateButtonD   = new JButton("Update Doctor");
+        JTextField TextFill_DID = new JTextField("doctor ID", 20);
+
 
 
         Button_DName.addActionListener(e -> {
@@ -135,7 +185,40 @@ public class main {
             db_op.loadData(doctorTable);
             JOptionPane.showMessageDialog(null, new JScrollPane(doctorTable), "All Doctors", JOptionPane.INFORMATION_MESSAGE);
         });
-            
+
+        deleteButtonD.addActionListener(e -> {
+            try {
+                int id = Integer.parseInt(TextFill_DID.getText().trim());
+                int confirm = JOptionPane.showConfirmDialog(
+                        null,
+                        "Delete doctor with ID " + id + "?",
+                        "Confirm Delete",
+                        JOptionPane.YES_NO_OPTION
+                );
+                if (confirm == JOptionPane.YES_OPTION) {
+                    db_op.delete_doctor(id);
+                    JOptionPane.showMessageDialog(null, "Doctor deleted.");
+                }
+            } catch (NumberFormatException ex) {
+                JOptionPane.showMessageDialog(null, "Please enter a valid numeric ID.");
+            }
+        });
+
+        updateButtonD.addActionListener(e -> {
+            try {
+                int id = Integer.parseInt(TextFill_DID.getText().trim());
+                db_op.update_doctor(
+                        id,
+                        TextFill_DName.getText(),
+                        TextFill_DFName.getText(),
+                        TextFill_Dadress.getText(),
+                        TextFill_Dphone.getText()
+                );
+                JOptionPane.showMessageDialog(null, "Doctor updated.");
+            } catch (NumberFormatException ex) {
+                JOptionPane.showMessageDialog(null, "Please enter a valid numeric ID.");
+            }
+        });            
 
 
         DoctorData.add(TextFill_DName);
@@ -151,14 +234,79 @@ public class main {
         DoctorData.add(searchButtonD);
         DoctorData.add(Box.createVerticalStrut(10));
         DoctorData.add(displayAllDoctors);
+        DoctorData.add(Box.createVerticalStrut(10));
+        DoctorData.add(TextFill_DID);
+        DoctorData.add(Box.createVerticalStrut(10));
+        DoctorData.add(deleteButtonD);
+        DoctorData.add(Box.createVerticalStrut(10));
+        DoctorData.add(updateButtonD);
 
 
         MainPanel.add(AppointmentPanel, "Appointment");
 
-        JTextField TextFill_AName = new JTextField("Appointment name", 20);
-        JButton Button_AName = new JButton("enter");
+        JTextField TextFill_PAName = new JTextField("patient id", 20);
+        JTextField TextFill_DAName = new JTextField("doctor id", 20);
+        JTextField TextFill_ADate = new JTextField("2000-01-01", 20);
+        JTextField TextFill_Time = new JTextField("00:00", 20);
+        JTextField TextFill_Status = new JTextField("pending", 20);
 
-        AppointmentPanel.add(TextFill_AName);
-        AppointmentPanel.add(Button_AName);
+        JButton Button_book = new JButton("enter");
+        JButton displayAppointments = new JButton("Display Appointments");
+        JButton deleteButtonA   = new JButton("Delete Appointment");
+        JTextField TextFill_AID = new JTextField("appointment ID", 20);
+
+
+        displayAppointments.addActionListener(e -> {
+            JTable appointmentTable = new JTable();
+            db_op.loadDataA(appointmentTable);
+            JOptionPane.showMessageDialog(null, new JScrollPane(appointmentTable), "All Appointments", JOptionPane.INFORMATION_MESSAGE);
+        });
+
+        Button_book.addActionListener(e -> {
+            try {
+                int patientId = Integer.parseInt(TextFill_PAName.getText().trim());
+                int doctorId = Integer.parseInt(TextFill_DAName.getText().trim());
+                String date = TextFill_Date.getText().trim();
+                String time = TextFill_Time.getText().trim();
+                String status = TextFill_Status.getText().trim();
+
+                db_op.book_attempt(patientId, doctorId, date, time, status);
+            } catch (NumberFormatException ex) {
+                JOptionPane.showMessageDialog(null, "Please enter valid numeric IDs for patient and doctor.");
+            }
+
+        });
+
+        deleteButtonA.addActionListener(e -> {
+            try {
+                int id = Integer.parseInt(TextFill_AID.getText().trim());
+                int confirm = JOptionPane.showConfirmDialog(
+                        null,
+                        "Delete appointment with ID " + id + "?",
+                        "Confirm Delete",
+                        JOptionPane.YES_NO_OPTION
+                );
+                if (confirm == JOptionPane.YES_OPTION) {
+                    db_op.delete_Appointment(id);
+                    JOptionPane.showMessageDialog(null, "Appointment deleted.");
+                }
+            } catch (NumberFormatException ex) {
+                JOptionPane.showMessageDialog(null, "Please enter a valid numeric ID.");
+            }
+        });
+                
+
+        AppointmentPanel.add(TextFill_PAName);
+        AppointmentPanel.add(TextFill_DAName);
+        AppointmentPanel.add(TextFill_Date);
+        AppointmentPanel.add(TextFill_Time);
+        AppointmentPanel.add(TextFill_Status);
+        AppointmentPanel.add(Button_book);
+        AppointmentPanel.add(Box.createVerticalStrut(10));
+        AppointmentPanel.add(displayAppointments);
+        AppointmentPanel.add(Box.createVerticalStrut(10));
+        AppointmentPanel.add(TextFill_AID);
+        AppointmentPanel.add(Box.createVerticalStrut(10));
+        AppointmentPanel.add(deleteButtonA);
     }
 }
