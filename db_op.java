@@ -47,8 +47,8 @@ public class db_op {
             
             PreparedStatement pstmt = conn.prepareStatement(sql)) {
 
-            pstmt.setString(1, name);
-            pstmt.setString(2, lastname);
+            pstmt.setString(1, lastname);
+            pstmt.setString(2, name);
             pstmt.setString(3, specialty);
             pstmt.setString(4, phone);
             
@@ -59,6 +59,79 @@ public class db_op {
             System.out.println("Database error: " + e.getMessage());
             e.printStackTrace(); // This prints the "why" in your console
         }
+    }
+
+    public static String search_patient(String name, String lastname) {
+
+        String sql = "SELECT * FROM patient WHERE firstname = ? AND lastname = ?";
+        String result = "";
+
+        try (
+            Connection conn = DriverManager.getConnection(url, user, passwd);
+            PreparedStatement pstmt = conn.prepareStatement(sql)
+        ) {
+
+            pstmt.setString(1, name);
+            pstmt.setString(2, lastname);
+
+            ResultSet rs = pstmt.executeQuery();
+
+            if (rs.next()) {
+                result =
+                        "ID: " + rs.getInt(1) + "\n" +
+                        "Name: " + rs.getString(2) + "\n" +
+                        "Lastname: " + rs.getString(3) + "\n" +
+                        "Birth Date: " + rs.getDate(4) + "\n" +
+                        "Phone: " + rs.getString(5) + "\n" +
+                        "Address: " + rs.getString(6);
+            } else {
+                result = "Patient not found";
+            }
+
+        } catch (SQLException e) {
+            result = "Database error: " + e.getMessage();
+            e.printStackTrace();
+        }
+
+        return result;
+    }
+
+    public static String search_doctor(String name, String lastname) {
+
+        String sql = "SELECT * FROM doctor WHERE firstname = ? AND lastname = ?";
+        String result = "";
+
+        try (
+            Connection conn = DriverManager.getConnection(url, user, passwd);
+            PreparedStatement pstmt = conn.prepareStatement(sql)
+        ) {
+
+            pstmt.setString(1, name);
+            pstmt.setString(2, lastname);
+
+            ResultSet rs = pstmt.executeQuery();
+            
+            boolean found = rs.next();
+
+            System.out.println("Doctor search executed. Found: " + found);  
+
+            if ( found) {
+                result =
+                        "ID: " + rs.getInt(1) + "\n" +
+                        "Name: " + rs.getString(2) + "\n" +
+                        "Lastname: " + rs.getString(3) + "\n" +
+                        "Specialty: " + rs.getString(4) + "\n" +
+                        "Phone: " + rs.getString(5) + "\n" ;
+            } else {
+                result = "Doctor not found";
+            }
+
+        } catch (SQLException e) {
+            result = "Database error: " + e.getMessage();
+            e.printStackTrace();
+        }
+
+        return result;
     }
 
 } 
