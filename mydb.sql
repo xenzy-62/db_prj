@@ -34,3 +34,5 @@ CREATE TABLE Appointment (
 CREATE SEQUENCE seq_patient START WITH 1 INCREMENT BY 1;
 CREATE SEQUENCE seq_doctor START WITH 1 INCREMENT BY 1;
 CREATE SEQUENCE seq_appointment START WITH 1 INCREMENT BY 1;
+
+ALTER TABLE appointment ADD CONSTRAINT unique_doctor_time UNIQUE (Num_Doctor, Appt_Date , Appt_Time);

@@ -298,7 +298,7 @@ public class main {
 
         AppointmentPanel.add(TextFill_PAName);
         AppointmentPanel.add(TextFill_DAName);
-        AppointmentPanel.add(TextFill_Date);
+        AppointmentPanel.add(TextFill_ADate);
         AppointmentPanel.add(TextFill_Time);
         AppointmentPanel.add(TextFill_Status);
         AppointmentPanel.add(Button_book);
@@ -308,5 +308,9 @@ public class main {
         AppointmentPanel.add(TextFill_AID);
         AppointmentPanel.add(Box.createVerticalStrut(10));
         AppointmentPanel.add(deleteButtonA);
+
+
+        
     }
+
 }
