@@ -324,8 +324,7 @@ public class db_op {
                                                   "Invalid ID", JOptionPane.ERROR_MESSAGE);
                     break;
                 default:
-                    JOptionPane.showMessageDialog(null, "Error: " + e.getMessage(), 
-                                                  "Database Error", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(null, "Error: " + e.getMessage(), "Database Error", JOptionPane.ERROR_MESSAGE);
             }
         }
     }
